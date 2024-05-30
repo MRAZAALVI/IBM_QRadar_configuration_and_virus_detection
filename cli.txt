@@ -1,0 +1,44 @@
+Check services status
+=====================
+/opt/qradar/upgrade/util/setup/upgrades/wait_for_start.sh
+
+Stop services safely
+====================
+systemctl stop hostcontext;  systemctl stop httpd;  systemctl stop tomcat;  systemctl stop hostservices; systemctl stop ecs-ec-ingress
+
+Start services safely
+====================
+systemctl start ecs-ec-ingress; systemctl start hostservices;  systemctl start tomcat;  systemctl start httpd;  systemctl start hostcontext; 
+
+Generate offense via command line
+=================================
+Example1
+---------
+for i in {1..30}; do echo "<85>Oct 20 11:16:23 10.10.5.5 sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1000 euid=0 tty=/dev/pts/3 ruser=dieter rhost=  user=dieter" | nc 192.168.1.222  514; done
+
+Example2
+---------
+for i in {1..100}; do echo "Dec 13 15:36:40 servername ecelerity[19107]: 1481636200|c0a82767-9efff70000004aa3-1c-584ff965ae31|IRCPTACTION|XXXXX@externalmail|tls|batvsign" |  nc 127.0.0.1  514; echo "Dec 13 15:36:40 server name bmserver[18808]: 1481636200|c0a82767-9efff70000004aa3-1c-584ff965ae31|VERDICT|XXXXX@externalmail|senderauth_batv_sign|default|static bounce attack prevention sign" |  nc 127.0.0.1  514; echo "Dec 13 15:36:40 servername ecelerity[19107]: 1481636200|c0a82767-9efff70000004aa3-1c-584ff965ae31|TRACKERID|XXXXX@externalmail|H4sIAAAAAAAAA+NgFmphleLIzCtJLcpLzFFi42I5sEL/pm7GT/8Ig4NLrC06Pm9jcmD0OLToL2sAY5S8TVJiSVlwZnqevp1NSU6xQnFqSUlmXrqtkq9jpJK+XYJ8xp5J3WwFD6Irvp3qZm5g7ArpYuTkkBAwkfj6awkziM0mYCexp7uPsYuRg0NEQFOi+5oHSJhZQEtiw8+rbCC2sICcxL3LGxhBbBEBZYnjG+6zQdh6Euu2f2EHsVkEVCXeHp3JBGLzCgRKHNzdA2YzCohJfD+1hgliprjErSfzmSBOEJF4ePE0G4QtKvHy8T9WCFte4mXXYqA4F1B9N6NE+waIxbwCghInZz5hmcAoMAvJrFnI6mYhqYMoypfY+2M+K4StJ3Fj6hQ2CFtbYtnC18wQtq7EjH+HWLCJT59whAnCVpSYvfwVI8SypYwSr7atY58FDDBmAR2JE818MDVTuh+yL2DkXcWomJyom5mjW5ybXpycmJeXWqSXmaOXXJmUWqSbWJStl5yfu4kRHLXq6TsY/+61PcQowMGoxMNbsNsvQog1say4MvcQowrQzEcbVl9glGLJy89LVRLhnf3VP0KINyWxsiq1KD++qDQntfgQoykw7CcyS4km5wMTTV5JvKGJkYWZhYWpsYmRpYWSOO+KDs0IIYH0xJLU7NTUgtQimD4mDs5DjBIcXFIixal5KalFiaUlGfGg5BRfDExPUg2MzmfFg699LWWdpFs7Yz9bnfxyHTHjdROmzJl5surF1/g+3h3+he8bNFNvK7vaPFOe+OvQthdefK/Dw09I3Xtqcb/33511t5s4FQqZ0pObj8mwJPIL/8h9/vPB43+fun5Onbvw6v9Lzb6lCUfCFKcpXVD/VCHw779P+r58O6YTsbO8WHwunn1toMRSnJFoqMVcVJwIAOUHMlkXAwAA" |  nc 127.0.0.1  514; echo "Dec 13 15:36:40 servername bmserver[18808]: 1481636200|c0a82767-9efff70000004aa3-1c-584ff965ae31|VERDICT|XXXXX@externalmail|content_1428688534298|default|attempt tls delivery of all outbound email" |  nc 127.0.0.1  514; echo "Dec 13 15:36:40 servername bmserver[18808]: 1481636200|c0a82767-9efff70000004aa3-1c-584ff965ae31|UNTESTED|XXXXX@externalmail|spam|bulk|submission|gray|safe|opl|has_urls|dz_document|unscannable_pmc|content_1418725976816|content_1374127223858|content_100|content_1383741485108|content_1383643893967|content_1375536063638|content_200|content_1374053350852|content_1463913125483|content_300|content_1388762948094|content_1409229432839|content_1393515840955|content_520|content_1390143157798|content_400|sys_deny_ip|sys_allow_ip|sys_allow_email|sys_deny_email|dns_allow|dns_deny|user_allow|user_deny|freq_va|freq_dha|freq_sa|connection_class_0|connection_class_1|connection_class_2|connection_class_3|connection_class_4|connection_class_5|connection_class_6|connection_class_7|connection_class_8|connection_class_9|senderauth_fail|senderauth_batv_fail|blockedlang|knownlang" | nc 127.0.0.1  514; echo "Dec 13 15:36:40 servername bmserver[18808]: 1481636200|c0a82767-9efff70000004aa3-1c-584ff965ae31|FIRED|XXXXX@externalmail|content_1428688534298|senderauth_batv_sign" | nc 127.0.0.1  514; done
+
+Example3
+---------
+1. create file with your logs
+2. use OOB perl script /opt/qradar/bin/logrun.pl -h
+
+myLogs.txt
+==========
+eventName=Connection Terminated,eventID=60, eventCategory= Teardown, username=Hatem_Metwally sourceip=176.202.181.85
+eventName=Connection Established,eventID=70, eventCategory= Connected, username=Hatem_Metwally sourceip=176.202.181.85
+
+/opt/qradar/bin/logrun.pl -d 192.168.1.222 -f myLogs.txt -v -n vpnHQ -u 99.33.22.11 -b 20
+
+Example4 - Flows
+----------------
+1. first add your appliance Network interface as a flow source
+2. use tcpreplay
+3. Enable promiscious mode for our appliance Network interface: ip link set [interface] promisc on
+4. upload any pcap file from 
+5. run tcprelay
+
+tcpreplay -i ens33 -x 20.00 -T gtod  --no-flow-stats --loop 60 --unique-ip telnet1.pcap 2> /dev/null &
+ 
